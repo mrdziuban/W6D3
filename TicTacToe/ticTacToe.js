@@ -1,6 +1,7 @@
 var ticTacToe = function () {
   var board = [[" "," "," "],[" "," "," "],[" "," "," "]];
   var currentPlayer = "X";
+  $('h1').after("<h3>" + currentPlayer + "'s turn</h3>")
 
   var gameOver = function () {
     if (vert() || horiz() || diag()){
@@ -80,6 +81,7 @@ var ticTacToe = function () {
 
   var switchPlayer = function () {
     (currentPlayer === "X") ? currentPlayer = "O" : currentPlayer = "X";
+    $('h3').text(currentPlayer + "'s turn");
   }
 
   var availMoves = function(){
