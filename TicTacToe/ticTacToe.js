@@ -82,21 +82,6 @@ var ticTacToe = function () {
     (currentPlayer === "X") ? currentPlayer = "O" : currentPlayer = "X";
   }
 
-  var gameLoop = function(currentPlayer) {
-    console.log("In game loop");
-    if (currentPlayer === 0){
-      currentPlayer = 1;
-    }
-    if (gameOver()){
-      return;
-    }
-    else{
-      makeMove(currentPlayer);
-      currentPlayer *= -1;
-      gameLoop(currentPlayer);
-    }
-  };
-
   var availMoves = function(){
     var moves = [];
     for (var row = 0; row < 3; row++) {
