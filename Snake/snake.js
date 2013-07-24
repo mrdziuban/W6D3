@@ -1,5 +1,5 @@
 var snake = {
-  snake: [[5, 5], [5, 4], [5, 3]],
+  snake: [[9, 10], [9, 9], [9, 8]],
   direction: "east",
   turn: function(dir){
     this.direction = dir;
@@ -7,9 +7,9 @@ var snake = {
 };
 
 var boardArr = [];
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 30; i++) {
   var row = [];
-  for (var j = 0; j < 10; j++) {
+  for (var j = 0; j < 30; j++) {
     row.push(" ");
   };
   boardArr.push(row);
@@ -20,17 +20,32 @@ var board = {
 };
 
 var genApple = function () {
-  var y = Math.floor(Math.random() * 10),
-      x = Math.floor(Math.random() * 10);
 
-  if (board.board[y][x] === " "){
-    board.board[y][x] = "a";
+  var x = Math.floor(Math.random() * board.board.length),
+      y = Math.floor(Math.random() * board.board.length);
+
+  if (board.board[x][y] === " "){
+    board.board[x][y] = "a";
   }
   else{
     genApple();
   }
 };
 
+var updateBoard = function () {
+  for (var i = 0; i < board.board.length; i++) {
+    for (var j = 0; j < board.board.length; j++) {
+      if (board.board[i][j] !== "a"){
+        board.board[i][j] = " ";
+      }
+    }
+  };
+  snake.snake.forEach(function(el2, j, arr2) {
+    board.board[el2[0]][el2[1]] = "o";
+  })
+};
+
+updateBoard();
 genApple();
 
 var game = {
@@ -52,16 +67,25 @@ var game = {
         break;
     }
 
-    var y = newHead[0],
-        x = newHead[1];
+    var x = newHead[0],
+        y = newHead[1];
 
-    if (board.board[y][x] === "a") {
+    if (head[0] === 0 || head[0] === board.board.length - 1 || head[1] === 0 || head[1] === board.board.length[0] - 1){
+      if (board.board[head[0]][head[1]] !== "a") {
+        snake.snake.pop();
+      }
+      else {
+        genApple();
+      }
+      snake.snake.unshift(newHead);
+    }
+    else if ((head[0] < 0 || head[0] >= board.board[0].length) || (head[1] < 0 || head[1] >= board.board.length)) {
+      return;
+    }
+    else if (board.board[x][y] === "a") {
       snake.snake.unshift(newHead);
       updateBoard();
       genApple();
-    }
-    else if (board.board[y][x] !== " " || board.board[y][x] === undefined) {
-      console.log("Game over!");
     }
     else {
       snake.snake.pop();
@@ -70,29 +94,3 @@ var game = {
     }
   }
 };
-
-var updateBoard = function () {
-  for (var i = 0; i < board.board.length; i++) {
-    for (var j = 0; j < board.board[i].length; j++) {
-      if (board.board[i][j] !== "a"){
-        board.board[i][j] = " ";
-      }
-    }
-  };
-  snake.snake.forEach(function(el2, j, arr2) {
-    board.board[el2[0]][el2[1]] = "o";
-  })
-};
-
-
-// game.step();
-// game.step();
-// game.step();
-// game.step();
-// game.step();
-// console.log(board.board);
-// console.log(snake.snake);
-// snake.turn("west");
-// game.step();
-// console.log(board.board);
-// console.log(snake.snake);
